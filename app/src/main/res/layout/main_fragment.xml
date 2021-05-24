@@ -18,6 +18,149 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/popular_list"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/popular_header_Tv"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pop1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/pop1_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher_foreground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/pop1_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop1_poster"/>
+
+            <TextView
+                android:id="@+id/pop1_realesed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_released"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop1_name"/>
+
+            <TextView
+                android:id="@+id/pop1_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_genre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop1_realesed"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pop2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/pop2_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher_foreground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/pop2_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop2_poster"/>
+
+            <TextView
+                android:id="@+id/pop2_realesed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_released"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop2_name"/>
+
+            <TextView
+                android:id="@+id/pop2_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_genre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop2_realesed"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pop3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/pop3_poster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher_foreground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/pop3_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop3_poster"/>
+
+            <TextView
+                android:id="@+id/pop3_realesed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_released"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop3_name"/>
+
+            <TextView
+                android:id="@+id/pop3_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/movie_genre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pop3_realesed"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/popular_header_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="5dp"
+        android:text="@string/popular_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/new_list"/>
+
+    <LinearLayout
         android:id="@+id/new_list"
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -148,25 +291,6 @@
                 app:layout_constraintTop_toBottomOf="@id/new3_realesed"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/popular_header_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_margin="5dp"
-        android:text="@string/popular_header"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_list"/>
-
-    <LinearLayout
-        android:id="@+id/popular_list"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/popular_header_Tv"
-        android:orientation="horizontal">
     </LinearLayout>
 
     <TextView

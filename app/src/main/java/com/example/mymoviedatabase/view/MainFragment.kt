@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.mymoviedatabase.viewmodel.AppState
-import com.example.mymoviedatabase.Movie
+import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.databinding.MainFragmentBinding
 import com.example.mymoviedatabase.viewmodel.MainViewModel
@@ -43,7 +43,13 @@ class MainFragment : Fragment() {
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getMovieFromLocalSource()
 
-        binding.new1.setOnClickListener {
+        binding.newList.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.container, MovieFragment())
+                .addToBackStack(null).commit()
+            Snackbar.make(binding.statusTv, "Aaaassssss!", Snackbar.LENGTH_LONG).show()
+        }
+
+        binding.popularList.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.container, MovieFragment())
                 .addToBackStack(null).commit()
             Snackbar.make(binding.statusTv, "Aaaassssss!", Snackbar.LENGTH_LONG).show()
@@ -57,6 +63,7 @@ class MainFragment : Fragment() {
                 val movieData = appState.movieData
                 binding.newHeaderTv.visibility = View.GONE
                 setData(movieData)
+                setDataTest(movieData)
                 Snackbar.make(binding.statusTv, "Success!", Snackbar.LENGTH_LONG).show()
                 binding.statusTv.text = getString(R.string.load_complete)
             }
@@ -79,6 +86,12 @@ class MainFragment : Fragment() {
         binding.new1Name.text = movieData.name
         binding.new1Realesed.text = movieData.realisedAt.toString()
         binding.new1Genre.text = movieData.genre
+    }
+
+    private fun setDataTest(movieData: Movie) {
+        binding.pop1Name.text = movieData.name
+        binding.pop1Realesed.text = movieData.realisedAt.toString()
+        binding.pop1Genre.text = movieData.genre
     }
 
 //    private fun push () {

@@ -1,4 +1,4 @@
-package com.example.mymoviedatabase
+package com.example.mymoviedatabase.model
 
 interface Repository {
 

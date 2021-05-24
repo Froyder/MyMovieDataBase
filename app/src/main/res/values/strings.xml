@@ -8,4 +8,8 @@
     <string name="movie_genre">Movie genre</string>
     <string name="load_complete">Loaded!</string>
     <string name="movie_raitng">Movie rating</string>
+    <string name="about_button">About app</string>
+    <string name="back_button">Back</string>
+    <string name="settings">Settings</string>
+    <string name="search">Search</string>
 </resources>

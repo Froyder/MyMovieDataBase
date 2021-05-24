@@ -1,4 +1,6 @@
-package com.example.mymoviedatabase
+package com.example.mymoviedatabase.model
+
+import com.example.mymoviedatabase.model.Repository
 
 class RepositoryImpl : Repository {
 

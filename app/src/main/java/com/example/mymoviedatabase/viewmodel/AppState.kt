@@ -1,6 +1,6 @@
 package com.example.mymoviedatabase.viewmodel
 
-import com.example.mymoviedatabase.Movie
+import com.example.mymoviedatabase.model.Movie
 
 sealed class AppState {
     data class Success(val movieData: Movie) : AppState()
