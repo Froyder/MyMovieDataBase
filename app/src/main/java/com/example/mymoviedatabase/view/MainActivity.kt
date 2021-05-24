@@ -3,8 +3,10 @@ package com.example.mymoviedatabase.view
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.R
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,16 +27,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.about_button) {
-            TODO()
+        if (item.itemId == R.id.search) {
+            Toast.makeText(this, "Search", Toast.LENGTH_LONG).show()
         }
 
         if (item.itemId == R.id.about_button) {
-            TODO()
+            Toast.makeText(this, "About app", Toast.LENGTH_LONG).show()
         }
 
         if (item.itemId == R.id.settings) {
-            TODO()
+            Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show()
 //            supportFragmentManager.beginTransaction()
 //                .replace(R.id.container, SettingsFragment())
 //                .addToBackStack(null)

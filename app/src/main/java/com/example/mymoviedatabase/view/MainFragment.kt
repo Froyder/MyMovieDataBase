@@ -46,13 +46,11 @@ class MainFragment : Fragment() {
         binding.newList.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.container, MovieFragment())
                 .addToBackStack(null).commit()
-            Snackbar.make(binding.statusTv, "Aaaassssss!", Snackbar.LENGTH_LONG).show()
         }
 
         binding.popularList.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.container, MovieFragment())
                 .addToBackStack(null).commit()
-            Snackbar.make(binding.statusTv, "Aaaassssss!", Snackbar.LENGTH_LONG).show()
         }
 
     }
