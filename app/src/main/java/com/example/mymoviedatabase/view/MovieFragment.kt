@@ -51,7 +51,6 @@ class MovieFragment: Fragment() {
             }
             is AppState.Loading -> {
                 binding.movieDescription.visibility = View.VISIBLE
-                Snackbar.make(binding.movieDescription, "Loading...", Snackbar.LENGTH_LONG).show()
             }
             is AppState.Error -> {
                 binding.movieDescription.visibility = View.GONE

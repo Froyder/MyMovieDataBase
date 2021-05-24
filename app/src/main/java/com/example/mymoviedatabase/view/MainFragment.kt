@@ -59,18 +59,16 @@ class MainFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 val movieData = appState.movieData
-                binding.newHeaderTv.visibility = View.GONE
                 setData(movieData)
                 setDataTest(movieData)
-                Snackbar.make(binding.statusTv, "Success!", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.statusTv, "Success!", Snackbar.LENGTH_SHORT).show()
                 binding.statusTv.text = getString(R.string.load_complete)
             }
             is AppState.Loading -> {
                 binding.newHeaderTv.visibility = View.VISIBLE
-                Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Error -> {
-                binding.newHeaderTv.visibility = View.GONE
                 Snackbar
                         .make(binding.statusTv, "Error", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Reload") { viewModel.getLiveData() }
