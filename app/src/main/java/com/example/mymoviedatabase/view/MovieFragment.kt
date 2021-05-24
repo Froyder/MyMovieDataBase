@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.mymoviedatabase.Movie
+import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.databinding.MovieFragmentBinding
 import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
