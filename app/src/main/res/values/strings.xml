@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyMovieDataBase</string>
+    <string name="new_header">New movies</string>
+    <string name="hint_status">Status</string>
+    <string name="popular_header">Popular movies</string>
+    <string name="movie_name">Movie name</string>
+    <string name="movie_released">Realised at</string>
+    <string name="movie_genre">Movie genre</string>
+    <string name="load_complete">Loaded!</string>
+    <string name="movie_raitng">Movie rating</string>
+</resources>
