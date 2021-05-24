@@ -69,6 +69,7 @@ class MovieFragment: Fragment() {
         binding.movieRealised.text = movieData.realisedAt.toString()
         binding.movieGenre.text = movieData.genre
         binding.movieRating.text = movieData.rating.toString()
+        binding.movieDescription.text = movieData.description
     }
 
 
