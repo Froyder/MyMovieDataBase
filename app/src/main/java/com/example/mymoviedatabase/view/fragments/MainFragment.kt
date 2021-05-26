@@ -1,4 +1,4 @@
-package com.example.mymoviedatabase.view
+package com.example.mymoviedatabase.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.databinding.MainFragmentBinding
 import com.example.mymoviedatabase.model.Movie
+import com.example.mymoviedatabase.view.adapters.NewListAdapter
+import com.example.mymoviedatabase.view.adapters.PopListAdapter
 import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar

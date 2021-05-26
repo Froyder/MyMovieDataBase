@@ -1,4 +1,4 @@
-package com.example.mymoviedatabase.view
+package com.example.mymoviedatabase.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.model.Movie
+import com.example.mymoviedatabase.view.fragments.MainFragment
 
-class NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
-    RecyclerView.Adapter<NewListAdapter.MainViewHolder>() {
+class PopListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
+    RecyclerView.Adapter<PopListAdapter.MainViewHolder>() {
 
     private var movieData: List<Movie> = listOf()
 

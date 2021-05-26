@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.R
-import com.google.android.material.snackbar.Snackbar
+import com.example.mymoviedatabase.view.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
