@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -32,11 +33,23 @@ class SettingsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.acceptButton.setOnClickListener {
-            val status = "Fragment Result API works!"
-            setFragmentResult(
-                "request",
-                bundleOf("key" to status)
-            )
+            var selected : Int = binding.radioGroup.checkedRadioButtonId
+            if (selected.equals(binding.radioButton1.id)) {
+                setFragmentResult(
+                    "request",
+                    bundleOf("key" to "Button 1")
+                )
+            } else if (selected.equals(binding.radioButton2.id)) {
+                setFragmentResult(
+                    "request",
+                    bundleOf("key" to "Button 2")
+                )
+            } else if (selected.equals(binding.radioButton3.id)) {
+                setFragmentResult(
+                    "request",
+                    bundleOf("key" to "Button 3")
+                )
+            }
             activity?.supportFragmentManager?.popBackStack()
         }
     }
