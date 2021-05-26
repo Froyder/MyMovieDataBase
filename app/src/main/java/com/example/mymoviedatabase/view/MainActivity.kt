@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.view.fragments.MainFragment
+import com.example.mymoviedatabase.view.fragments.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,11 +37,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (item.itemId == R.id.settings) {
-            Toast.makeText(this, "Settings", Toast.LENGTH_LONG).show()
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.container, SettingsFragment())
-//                .addToBackStack(null)
-//                .commit()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, SettingsFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         if (item.itemId == R.id.back_button) {

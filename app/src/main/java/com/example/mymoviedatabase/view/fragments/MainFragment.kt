@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,6 +54,17 @@ class MainFragment : Fragment() {
             }
         }
     })
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Use the Kotlin extension in the fragment-ktx artifact
+        setFragmentResultListener("request") { requestKey, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported
+            val status = bundle.getString("key")
+            // Do something with the result
+            binding.statusTv.text = status
+        }
+    }
 
     override fun onDestroy() {
         newListAdapter.removeListener()
