@@ -33,10 +33,9 @@ class SettingsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.acceptButton.setOnClickListener {
-            var selected : Int = binding.radioGroup.checkedRadioButtonId
+            val selected : Int = binding.radioGroup.checkedRadioButtonId
             if (selected.equals(binding.radioButton1.id)) {
-                setFragmentResult(
-                    "request",
+                setFragmentResult("request",
                     bundleOf("key" to "Button 1")
                 )
             } else if (selected.equals(binding.radioButton2.id)) {
