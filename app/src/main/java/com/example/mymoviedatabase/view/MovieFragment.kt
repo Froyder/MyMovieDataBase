@@ -24,16 +24,13 @@ class MovieFragment: Fragment() {
         }
     }
 
-    private lateinit var viewModel: MainViewModel
-
     private var _binding: MovieFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         _binding = MovieFragmentBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onDestroyView() {

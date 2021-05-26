@@ -13,7 +13,7 @@ class NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemVi
 
     private var movieData: List<Movie> = listOf()
 
-    fun setMovie(data: List<Movie>) {
+    fun setMovieList(data: List<Movie>) {
         movieData = data
         notifyDataSetChanged()
     }

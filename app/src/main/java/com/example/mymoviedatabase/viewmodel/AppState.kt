@@ -3,7 +3,7 @@ package com.example.mymoviedatabase.viewmodel
 import com.example.mymoviedatabase.model.Movie
 
 sealed class AppState {
-    data class Success(val movieData: List<Movie>) : AppState()
+    data class Success(val newMovieList: List<Movie>, val popMovieList: List<Movie>) : AppState()
     data class Error(val error: Throwable) : AppState()
     object Loading : AppState()
 }

@@ -95,8 +95,8 @@ class MainFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                newListAdapter.setMovie(appState.movieData)
-                popListAdapter.setMovie(appState.movieData)
+                newListAdapter.setMovieList(appState.newMovieList)
+                popListAdapter.setMovieList(appState.popMovieList)
             }
             is AppState.Loading -> {
                 binding.newHeaderTv.visibility = View.VISIBLE

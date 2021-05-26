@@ -19,12 +19,10 @@ class MainViewModel(
     private fun getDataFromLocalSource() {
         liveDataToObserve.value = AppState.Loading
         Thread {
-            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMovieListFromLocalStorage()))
+            liveDataToObserve.postValue(AppState.Success
+                (newMovieList = repositoryImpl.getNewListFromLocalStorage(),
+                popMovieList = repositoryImpl.getPopularListFromLocalStorage()))
         }.start()
-    }
-
-    fun userClicked() {
-        //counter++
     }
 
 }
