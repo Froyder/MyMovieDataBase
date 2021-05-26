@@ -1,18 +1,21 @@
 package com.example.mymoviedatabase.view
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.example.mymoviedatabase.viewmodel.AppState
-import com.example.mymoviedatabase.model.Movie
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.databinding.MainFragmentBinding
+import com.example.mymoviedatabase.model.Movie
+import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+
 
 class MainFragment : Fragment() {
 
@@ -22,14 +25,56 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
+    private val newListAdapter = NewListAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(movie: Movie) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                manager.beginTransaction()
+                    .replace(R.id.container, MovieFragment.newInstance(bundle))
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+            }
+        }
+    })
+
+    private val popListAdapter = PopListAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(movie: Movie) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                manager.beginTransaction()
+                    .replace(R.id.container, MovieFragment.newInstance(bundle))
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+            }
+        }
+    })
+
+    override fun onDestroy() {
+        newListAdapter.removeListener()
+        popListAdapter.removeListener()
+        super.onDestroy()
+    }
+
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+
+        val newListManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        val popListManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.newListRecyclerView.layoutManager = newListManager
+        binding.popListRecyclerView.layoutManager = popListManager
+
+        return binding.root
     }
 
     override fun onDestroyView() {
@@ -37,32 +82,21 @@ class MainFragment : Fragment() {
         _binding = null
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.newListRecyclerView.adapter = newListAdapter
+        binding.popListRecyclerView.adapter = popListAdapter
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getMovieFromLocalSource()
-
-        binding.newList.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.container, MovieFragment())
-                .addToBackStack(null).commit()
-        }
-
-        binding.popularList.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.container, MovieFragment())
-                .addToBackStack(null).commit()
-        }
-
     }
 
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                val movieData = appState.movieData
-                setData(movieData)
-                setDataTest(movieData)
-                Snackbar.make(binding.statusTv, "Success!", Snackbar.LENGTH_SHORT).show()
-                binding.statusTv.text = getString(R.string.load_complete)
+                newListAdapter.setMovie(appState.movieData)
+                popListAdapter.setMovie(appState.movieData)
             }
             is AppState.Loading -> {
                 binding.newHeaderTv.visibility = View.VISIBLE
@@ -70,28 +104,16 @@ class MainFragment : Fragment() {
             }
             is AppState.Error -> {
                 Snackbar
-                        .make(binding.statusTv, "Error", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Reload") { viewModel.getLiveData() }
-                        .show()
+                    .make(binding.statusTv, "Error", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Reload") { viewModel.getLiveData() }
+                    .show()
             }
         }
 
     }
 
-    private fun setData(movieData: Movie) {
-        binding.new1Name.text = movieData.name
-        binding.new1Realesed.text = movieData.realisedAt.toString()
-        binding.new1Genre.text = movieData.genre
+    interface OnItemViewClickListener {
+        fun onItemViewClick(movie: Movie)
     }
-
-    private fun setDataTest(movieData: Movie) {
-        binding.pop1Name.text = movieData.name
-        binding.pop1Realesed.text = movieData.realisedAt.toString()
-        binding.pop1Genre.text = movieData.genre
-    }
-
-//    private fun push () {
-//        Toast.makeText(context, "new", Toast.LENGTH_LONG).show()
-//    }
 
 }

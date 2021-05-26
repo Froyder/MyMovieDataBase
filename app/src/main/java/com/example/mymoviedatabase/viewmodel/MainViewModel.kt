@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mymoviedatabase.model.Repository
 import com.example.mymoviedatabase.model.RepositoryImpl
+import java.lang.Thread.sleep
 
 class MainViewModel(
     private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
@@ -18,7 +19,7 @@ class MainViewModel(
     private fun getDataFromLocalSource() {
         liveDataToObserve.value = AppState.Loading
         Thread {
-            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMovieFromLocalStorage()))
+            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMovieListFromLocalStorage()))
         }.start()
     }
 

@@ -16,7 +16,12 @@ import com.google.android.material.snackbar.Snackbar
 class MovieFragment: Fragment() {
 
     companion object {
-        fun newInstance() = MovieFragment()
+        const val BUNDLE_EXTRA = "movie"
+        fun newInstance(bundle: Bundle): MovieFragment {
+            val fragment = MovieFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     private lateinit var viewModel: MainViewModel
@@ -36,40 +41,15 @@ class MovieFragment: Fragment() {
         _binding = null
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
-        viewModel.getMovieFromLocalSource()
-    }
-
-    private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Success -> {
-                val movieData = appState.movieData
-                setData(movieData)
-            }
-            is AppState.Loading -> {
-                binding.movieDescription.visibility = View.VISIBLE
-            }
-            is AppState.Error -> {
-                binding.movieDescription.visibility = View.GONE
-                Snackbar
-                    .make(binding.movieDescription, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getLiveData() }
-                    .show()
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val movieData = arguments?.getParcelable<Movie>(BUNDLE_EXTRA)
+        if (movieData != null) {
+            binding.movieName.text = movieData.name
+            binding.movieRealised.text = movieData.realisedAt.toString()
+            binding.movieGenre.text = movieData.genre
+            binding.movieRating.text = movieData.rating.toString()
+            binding.movieDescription.text = movieData.description
         }
-
     }
-
-    private fun setData(movieData: Movie) {
-        binding.movieName.text = movieData.name
-        binding.movieRealised.text = movieData.realisedAt.toString()
-        binding.movieGenre.text = movieData.genre
-        binding.movieRating.text = movieData.rating.toString()
-        binding.movieDescription.text = movieData.description
-    }
-
-
 }

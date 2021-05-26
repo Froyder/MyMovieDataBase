@@ -8,8 +8,8 @@ class RepositoryImpl : Repository {
         return Movie()
     }
 
-    override fun getMovieFromLocalStorage(): Movie {
-        return getDefaultMovie()
+    override fun getMovieListFromLocalStorage(): List<Movie> {
+        return getPopularList()
     }
 
 

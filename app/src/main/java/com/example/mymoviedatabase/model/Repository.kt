@@ -4,5 +4,6 @@ interface Repository {
 
     fun getMovieFromServer(): Movie
 
-    fun getMovieFromLocalStorage(): Movie
+    fun getMovieListFromLocalStorage(): List<Movie>
 }
+
