@@ -15,8 +15,7 @@ data class Movie(
 fun getDefaultMovie() = Movie("Avengers 6", 2028, "comedy", 7.7,
     "They gonna save the planet. Again!" )
 
-fun getNewListFromStorage(): List<Movie> {
-    return listOf(
+fun getNewListFromStorage() = listOf(
         Movie("\"Avengers 1\"", 2020, "comedy", 7.7,
             "They gonna save the planet. Again!" ),
         Movie("\"Avengers 2\"", 2022, "comedy", 7.7,
@@ -29,10 +28,8 @@ fun getNewListFromStorage(): List<Movie> {
             "They gonna save the planet. Again!" ),
         Movie("\"Avengers 6\"", 2026, "comedy", 7.7,
     "They gonna save the planet. Again!" ))
-}
 
-fun getPopularListFromStorage(): List<Movie> {
-    return listOf(
+fun getPopularListFromStorage() = listOf(
         Movie("\"Citizen Kane\"", 1941, "drama", 8.8,
             "Following the death of publishing tycoon Charles Foster Kane, reporters scramble to uncover the meaning of his final utterance; 'Rosebud'." ),
         Movie("\"The Shawshank Redemption\"", 1994, "drama", 9.3,
@@ -48,4 +45,3 @@ fun getPopularListFromStorage(): List<Movie> {
             "In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes " +
                     "concerned for his Jewish workforce after witnessing their persecution by the Nazis.")
     )
-}

@@ -35,13 +35,24 @@ class MovieFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val movieData = arguments?.getParcelable<Movie>(BUNDLE_EXTRA)
-        if (movieData != null) {
-            binding.movieName.text = movieData.name
-            binding.movieRealised.text = movieData.realisedAt.toString()
-            binding.movieGenre.text = movieData.genre
-            binding.movieRating.text = movieData.rating.toString()
-            binding.movieDescription.text = movieData.description
+        arguments?.getParcelable<Movie>(BUNDLE_EXTRA)?.let { it ->
+            binding.movieName.text = it.name
+            binding.movieRealised.text = it.realisedAt.toString()
+            binding.movieGenre.text = it.genre
+            binding.movieRating.text = it.rating.toString()
+            binding.movieDescription.text = it.description
         }
     }
+
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        val movieData = arguments?.getParcelable<Movie>(BUNDLE_EXTRA)
+//        if (movieData != null) {
+//            binding.movieName.text = movieData.name
+//            binding.movieRealised.text = movieData.realisedAt.toString()
+//            binding.movieGenre.text = movieData.genre
+//            binding.movieRating.text = movieData.rating.toString()
+//            binding.movieDescription.text = movieData.description
+//        }
+//    }
 }

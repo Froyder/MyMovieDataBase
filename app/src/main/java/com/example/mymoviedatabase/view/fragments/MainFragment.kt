@@ -25,22 +25,24 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    //private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
 
+    //KOTLIN style
     private val newListAdapter = NewListAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
-                manager.beginTransaction()
-                    .replace(R.id.container, MovieFragment.newInstance(bundle))
-                    .addToBackStack(null)
-                    .commitAllowingStateLoss()
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
+                    .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
+                        putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                    }))
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
             }
         }
     })
 
+    //JAVA style
     private val popListAdapter = PopListAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
             val manager = activity?.supportFragmentManager
@@ -100,7 +102,7 @@ class MainFragment : Fragment() {
 
         binding.newListRecyclerView.adapter = newListAdapter
         binding.popListRecyclerView.adapter = popListAdapter
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getMovieFromLocalSource()
     }
@@ -116,13 +118,22 @@ class MainFragment : Fragment() {
                 Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Error -> {
-                Snackbar
-                    .make(binding.statusTv, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getLiveData() }
-                    .show()
+                binding.mainFragmentRootView.showSnackBar(
+                        getString(R.string.error),
+                        getString(R.string.reload),
+                        { viewModel.getMovieFromLocalSource() })
             }
         }
 
+    }
+
+    private fun View.showSnackBar(
+            text: String,
+            actionText: String,
+            action: (View) -> Unit,
+            length: Int = Snackbar.LENGTH_INDEFINITE
+    ) {
+        Snackbar.make(this, text, length).setAction(actionText, action).show()
     }
 
     interface OnItemViewClickListener {

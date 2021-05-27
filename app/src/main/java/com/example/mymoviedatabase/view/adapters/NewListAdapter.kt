@@ -44,12 +44,14 @@ class NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemVi
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.main_name).text = movie.name
-            itemView.findViewById<TextView>(R.id.main_realesed).text = movie.realisedAt.toString()
-            itemView.findViewById<TextView>(R.id.main_genre).text = movie.genre
+            itemView.apply {
+               findViewById<TextView>(R.id.main_name).text = movie.name
+               findViewById<TextView>(R.id.main_realesed).text = movie.realisedAt.toString()
+               findViewById<TextView>(R.id.main_genre).text = movie.genre
 
-            itemView.setOnClickListener {
-                onItemViewClickListener?.onItemViewClick(movie)
+               setOnClickListener {
+                    onItemViewClickListener?.onItemViewClick(movie)
+                }
             }
         }
     }
