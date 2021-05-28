@@ -15,4 +15,9 @@
     <string name="descritption">Description</string>
     <string name="error">Error!</string>
     <string name="reload">Reload!</string>
+    <string name="accept">Accept</string>
+    <string name="only_popular_movies">Only popular movies</string>
+    <string name="only_new_movies">Only new movies</string>
+    <string name="both_lists">Both lists</string>
+    <string name="choose_visibility_settings">Choose visibility settings:</string>
 </resources>

@@ -36,17 +36,17 @@ class SettingsFragment: Fragment() {
             val selected : Int = binding.radioGroup.checkedRadioButtonId
             if (selected.equals(binding.radioButton1.id)) {
                 setFragmentResult("request",
-                    bundleOf("key" to "Button 1")
+                    bundleOf("key" to "Only popular")
                 )
             } else if (selected.equals(binding.radioButton2.id)) {
                 setFragmentResult(
                     "request",
-                    bundleOf("key" to "Button 2")
+                    bundleOf("key" to "Only new")
                 )
             } else if (selected.equals(binding.radioButton3.id)) {
                 setFragmentResult(
                     "request",
-                    bundleOf("key" to "Button 3")
+                    bundleOf("key" to "Both lists")
                 )
             }
             activity?.supportFragmentManager?.popBackStack()

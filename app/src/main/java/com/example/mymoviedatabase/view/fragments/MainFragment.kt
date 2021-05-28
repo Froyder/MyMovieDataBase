@@ -1,9 +1,11 @@
 package com.example.mymoviedatabase.view.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
@@ -33,9 +35,9 @@ class MainFragment : Fragment() {
         override fun onItemViewClick(movie: Movie) {
             activity?.supportFragmentManager?.apply {
                 beginTransaction()
-                    .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
-                        putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
-                    }))
+                        .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
+                            putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                        }))
                         .addToBackStack("")
                         .commitAllowingStateLoss()
             }
@@ -50,9 +52,9 @@ class MainFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
                 manager.beginTransaction()
-                    .replace(R.id.container, MovieFragment.newInstance(bundle))
-                    .addToBackStack(null)
-                    .commitAllowingStateLoss()
+                        .replace(R.id.container, MovieFragment.newInstance(bundle))
+                        .addToBackStack(null)
+                        .commitAllowingStateLoss()
             }
         }
     })
@@ -61,11 +63,33 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // Use the Kotlin extension in the fragment-ktx artifact
         setFragmentResultListener("request") { requestKey, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported
-            val status = bundle.getString("key")
-            // Do something with the result
-            binding.statusTv.text = status
+            when (bundle.getString("key")) {
+                "Only popular" -> {
+                    binding.newListRecyclerView.hide()
+                    binding.newHeaderTv.hide()
+                }
+                "Only new" -> {
+                    binding.popListRecyclerView.hide()
+                    binding.popularHeaderTv.hide()
+                }
+                else -> null
+            }
+            binding.statusTv.text = bundle.getString("key")
         }
+    }
+
+    fun View.show() : View {
+        if (visibility != View.VISIBLE) {
+            visibility = View.VISIBLE
+        }
+        return this
+    }
+
+    fun View.hide() : View {
+        if (visibility != View.GONE) {
+            visibility = View.GONE
+        }
+        return this
     }
 
     override fun onDestroy() {
@@ -78,9 +102,9 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
@@ -114,12 +138,10 @@ class MainFragment : Fragment() {
                 popListAdapter.setMovieList(appState.popMovieList)
             }
             is AppState.Loading -> {
-                binding.newHeaderTv.visibility = View.VISIBLE
                 Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Error -> {
-                binding.mainFragmentRootView.showSnackBar(
-                        getString(R.string.error),
+                binding.mainFragmentRootView.snackBarCreateAndShow(
                         getString(R.string.reload),
                         { viewModel.getMovieFromLocalSource() })
             }
@@ -127,13 +149,17 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun View.showSnackBar(
-            text: String,
-            actionText: String,
-            action: (View) -> Unit,
-            length: Int = Snackbar.LENGTH_INDEFINITE
-    ) {
-        Snackbar.make(this, text, length).setAction(actionText, action).show()
+//    private fun View.showSnackBar(
+//            text: String,
+//            actionText: String,
+//            action: (View) -> Unit,
+//            length: Int = Snackbar.LENGTH_INDEFINITE
+//    ) {
+//        Snackbar.make(this, text, length).setAction(actionText, action).show()
+//    }
+
+    fun View.snackBarCreateAndShow(actionText: String, action: (View) -> Unit, length: Int = Snackbar.LENGTH_INDEFINITE) {
+        Snackbar.make(this, R.string.error, length).setAction(actionText, action).show()
     }
 
     interface OnItemViewClickListener {

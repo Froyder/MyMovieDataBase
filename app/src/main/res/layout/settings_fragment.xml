@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="20dp"
-        android:text="TextView" />
+        android:text="@string/choose_visibility_settings" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -27,19 +27,19 @@
             android:id="@+id/radioButton1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/only_popular_movies" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/only_new_movies" />
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="RadioButton" />
+            android:text="@string/both_lists" />
 
     </RadioGroup>
 
@@ -47,7 +47,7 @@
         android:id="@+id/acceptButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Accept"
+        android:text="@string/accept"
         tools:layout_editor_absoluteX="151dp"
         tools:layout_editor_absoluteY="40dp"
         app:layout_constraintStart_toStartOf="parent"

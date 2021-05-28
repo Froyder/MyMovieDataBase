@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.search) {
             Toast.makeText(this, "Search", Toast.LENGTH_LONG).show()
+
         }
 
         if (item.itemId == R.id.about_button) {
