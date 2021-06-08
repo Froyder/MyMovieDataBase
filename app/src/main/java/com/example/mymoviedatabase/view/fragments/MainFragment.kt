@@ -78,7 +78,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
         //binding.newListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -101,12 +101,12 @@ class MainFragment : Fragment() {
                     binding.topListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, movie ->
+                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, result ->
                             activity?.supportFragmentManager?.apply {
                                 beginTransaction()
                                         .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
                                             Toast.makeText(context, "Load Movie Page", Toast.LENGTH_SHORT).show()
-                                            putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                                            putParcelable(MovieFragment.BUNDLE_EXTRA, result)
                                         }))
                                         .addToBackStack("")
                                         .commitAllowingStateLoss()
@@ -131,12 +131,12 @@ class MainFragment : Fragment() {
                     binding.popListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, movie ->
+                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, result ->
                             activity?.supportFragmentManager?.apply {
                                     beginTransaction()
                                     .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
                                         Toast.makeText(context, "Load Movie Page", Toast.LENGTH_SHORT).show()
-                                        putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                                        putParcelable(MovieFragment.BUNDLE_EXTRA, result)
                                     }))
                                     .addToBackStack("")
                                     .commitAllowingStateLoss()

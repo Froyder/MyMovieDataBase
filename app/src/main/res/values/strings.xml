@@ -25,4 +25,5 @@
     <string name="only_top_movies">Only top movies</string>
     <string name="movie_budget">Budget</string>
     <string name="movie_rating">Movie rating</string>
+    <string name="poster">Poster</string>
 </resources>
