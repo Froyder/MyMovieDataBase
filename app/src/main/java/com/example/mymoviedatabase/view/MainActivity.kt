@@ -8,12 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.view.fragments.MainFragment
 import com.example.mymoviedatabase.view.fragments.SettingsFragment
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.container, MainFragment.newInstance())

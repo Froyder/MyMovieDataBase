@@ -9,7 +9,7 @@ import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.view.fragments.MainFragment
 
-class NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
+class   NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
     RecyclerView.Adapter<NewListAdapter.MainViewHolder>() {
 
     private var movieData: List<Movie> = listOf()
@@ -47,7 +47,7 @@ class NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemVi
             itemView.apply {
                findViewById<TextView>(R.id.main_name).text = movie.name
                findViewById<TextView>(R.id.main_realesed).text = movie.realisedAt.toString()
-               findViewById<TextView>(R.id.main_genre).text = movie.genre
+               findViewById<TextView>(R.id.main_rating).text = movie.rating.toString()
 
                setOnClickListener {
                     onItemViewClickListener?.onItemViewClick(movie)

@@ -20,4 +20,9 @@
     <string name="only_new_movies">Only new movies</string>
     <string name="both_lists">Both lists</string>
     <string name="choose_visibility_settings">Choose visibility settings:</string>
+    <string name="api_key">db54cff977d7322cf1ce7a7e533b3721</string>
+    <string name="top_movies">Top rated movies</string>
+    <string name="only_top_movies">Only top movies</string>
+    <string name="movie_budget">Budget</string>
+    <string name="movie_rating">Movie rating</string>
 </resources>

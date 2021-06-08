@@ -12,6 +12,8 @@ data class Movie(
     val description :String = ""
 ) : Parcelable
 
+annotation class SerializedName(val value: String)
+
 fun getDefaultMovie() = Movie("Avengers 6", 2028, "comedy", 7.7,
     "They gonna save the planet. Again!" )
 

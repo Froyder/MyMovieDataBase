@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -34,36 +35,31 @@
         android:hint="@string/movie_released" />
 
     <TextView
-        android:id="@+id/movieGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toEndOf="@id/poster"
-        app:layout_constraintTop_toBottomOf="@id/movieRealised"
-        android:hint="@string/movie_genre"
-        />
-
-    <TextView
         android:id="@+id/movieRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_margin="5dp"
         app:layout_constraintStart_toEndOf="@id/poster"
-        app:layout_constraintTop_toBottomOf="@id/movieGenre"
+        app:layout_constraintTop_toBottomOf="@id/movieRealised"
         android:hint="@string/movie_raitng"
         />
 
-    <TextView
-        android:id="@+id/movieDescription"
-        android:layout_width="wrap_content"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/description_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/descritption"
-        android:textSize="20sp"
+        android:fillViewport="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/poster" />
+        app:layout_constraintTop_toBottomOf="@id/poster">
+
+        <TextView
+            android:id="@+id/movieDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/descritption"
+            android:textSize="20sp" />
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

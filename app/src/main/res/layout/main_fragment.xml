@@ -8,22 +8,22 @@
     tools:context=".view.fragments.MainFragment">
 
     <TextView
-        android:id="@+id/new_header_Tv"
+        android:id="@+id/top_header_Tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:layout_margin="5dp"
-        android:text="@string/new_header"
+        android:text="@string/top_movies"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/newListRecyclerView"
+        android:id="@+id/topListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_header_Tv"
+        app:layout_constraintTop_toBottomOf="@id/top_header_Tv"
         android:scrollbars="horizontal" />
 
     <TextView
@@ -34,12 +34,12 @@
         android:layout_margin="5dp"
         android:text="@string/popular_header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/newListRecyclerView"/>
+        app:layout_constraintTop_toBottomOf="@id/topListRecyclerView"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/popListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/popular_header_Tv"

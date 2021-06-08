@@ -31,10 +31,10 @@
         app:layout_constraintTop_toBottomOf="@id/main_name"/>
 
     <TextView
-        android:id="@+id/main_genre"
+        android:id="@+id/main_rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/movie_genre"
+        android:hint="@string/movie_rating"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_realesed"/>
 

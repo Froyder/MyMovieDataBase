@@ -1,11 +1,11 @@
 package com.example.mymoviedatabase.view.fragments
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import android.widget.ListAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
@@ -18,7 +18,11 @@ import com.example.mymoviedatabase.view.adapters.NewListAdapter
 import com.example.mymoviedatabase.view.adapters.PopListAdapter
 import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
+import com.example.retrofittest2.*
 import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainFragment : Fragment() {
@@ -30,45 +34,16 @@ class MainFragment : Fragment() {
     //private lateinit var viewModel: MainViewModel
     private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
 
-    //KOTLIN style
-    private val newListAdapter = NewListAdapter(object : OnItemViewClickListener {
-        override fun onItemViewClick(movie: Movie) {
-            activity?.supportFragmentManager?.apply {
-                beginTransaction()
-                        .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
-                            putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
-                        }))
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-            }
-        }
-    })
-
-    //JAVA style
-    private val popListAdapter = PopListAdapter(object : OnItemViewClickListener {
-        override fun onItemViewClick(movie: Movie) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
-                manager.beginTransaction()
-                        .replace(R.id.container, MovieFragment.newInstance(bundle))
-                        .addToBackStack(null)
-                        .commitAllowingStateLoss()
-            }
-        }
-    })
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Use the Kotlin extension in the fragment-ktx artifact
         setFragmentResultListener("request") { requestKey, bundle ->
             when (bundle.getString("key")) {
                 "Only popular" -> {
-                    binding.newListRecyclerView.hide()
-                    binding.newHeaderTv.hide()
+                    binding.topListRecyclerView.hide()
+                    binding.topHeaderTv.hide()
                 }
-                "Only new" -> {
+                "Only top" -> {
                     binding.popListRecyclerView.hide()
                     binding.popularHeaderTv.hide()
                 }
@@ -93,8 +68,8 @@ class MainFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        newListAdapter.removeListener()
-        popListAdapter.removeListener()
+        //newListAdapter.removeListener()
+        //popListAdapter.removeListener()
         super.onDestroy()
     }
 
@@ -102,18 +77,79 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
-        val newListManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        val popListManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.newListRecyclerView.layoutManager = newListManager
-        binding.popListRecyclerView.layoutManager = popListManager
+        //binding.newListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+       initPopList()
+
+       initTopList()
 
         return binding.root
+    }
+
+    private fun initTopList() {
+        val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
+        val call = request.getTopMovies(getString(R.string.api_key))
+
+        call.enqueue(object : Callback<Movies>{
+
+            override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
+                if (response.isSuccessful){
+                    binding.topListRecyclerView.apply {
+                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                        adapter = PopListAdapter(response.body()!!.results, onClickListener = { view, movie ->
+                            activity?.supportFragmentManager?.apply {
+                                beginTransaction()
+                                        .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
+                                            Toast.makeText(context, "Load Movie Page", Toast.LENGTH_SHORT).show()
+                                            putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                                        }))
+                                        .addToBackStack("")
+                                        .commitAllowingStateLoss()
+                            }})
+                    }
+                }
+            }
+            override fun onFailure(call: Call<Movies>, t: Throwable) {
+                Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun initPopList() {
+        val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
+        val call = request.getPopularMovies(getString(R.string.api_key))
+
+        call.enqueue(object : Callback<Movies>{
+
+            override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
+                if (response.isSuccessful){
+                    binding.popListRecyclerView.apply {
+                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                        adapter = PopListAdapter(response.body()!!.results, onClickListener = { view, movie ->
+                            activity?.supportFragmentManager?.apply {
+                                    beginTransaction()
+                                    .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
+                                        Toast.makeText(context, "Load Movie Page", Toast.LENGTH_SHORT).show()
+                                        putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                                    }))
+                                    .addToBackStack("")
+                                    .commitAllowingStateLoss()
+                        }})
+                    }
+                }
+            }
+            override fun onFailure(call: Call<Movies>, t: Throwable) {
+                Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -124,8 +160,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.newListRecyclerView.adapter = newListAdapter
-        binding.popListRecyclerView.adapter = popListAdapter
+        //binding.newListRecyclerView.adapter = newListAdapter
         //viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getMovieFromLocalSource()
@@ -134,20 +169,34 @@ class MainFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                newListAdapter.setMovieList(appState.newMovieList)
-                popListAdapter.setMovieList(appState.popMovieList)
+                //newListAdapter.setMovieList(appState.newMovieList)
+                //popListAdapter.setMovieList(appState.popMovieList)
             }
             is AppState.Loading -> {
                 Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Error -> {
                 binding.mainFragmentRootView.snackBarCreateAndShow(
-                        getString(R.string.reload),
-                        { viewModel.getMovieFromLocalSource() })
+                    getString(R.string.reload),
+                    { viewModel.getMovieFromLocalSource() })
             }
         }
 
     }
+
+    //KOTLIN style for LOCAL SOURCE
+//    private val newListAdapter = NewListAdapter(object : OnItemViewClickListener {
+//        override fun onItemViewClick(movie: Movie) {
+//            activity?.supportFragmentManager?.apply {
+//                beginTransaction()
+//                        .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
+//                            putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+//                        }))
+//                        .addToBackStack("")
+//                        .commitAllowingStateLoss()
+//            }
+//        }
+//    })
 
 //    private fun View.showSnackBar(
 //            text: String,
@@ -158,7 +207,11 @@ class MainFragment : Fragment() {
 //        Snackbar.make(this, text, length).setAction(actionText, action).show()
 //    }
 
-    fun View.snackBarCreateAndShow(actionText: String, action: (View) -> Unit, length: Int = Snackbar.LENGTH_INDEFINITE) {
+    fun View.snackBarCreateAndShow(
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_INDEFINITE
+    ) {
         Snackbar.make(this, R.string.error, length).setAction(actionText, action).show()
     }
 

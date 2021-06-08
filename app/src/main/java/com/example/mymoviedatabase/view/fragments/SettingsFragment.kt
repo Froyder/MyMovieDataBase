@@ -41,7 +41,7 @@ class SettingsFragment: Fragment() {
             } else if (selected.equals(binding.radioButton2.id)) {
                 setFragmentResult(
                     "request",
-                    bundleOf("key" to "Only new")
+                    bundleOf("key" to "Only top")
                 )
             } else if (selected.equals(binding.radioButton3.id)) {
                 setFragmentResult(

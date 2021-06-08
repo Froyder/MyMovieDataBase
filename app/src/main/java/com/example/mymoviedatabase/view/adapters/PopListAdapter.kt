@@ -1,68 +1,49 @@
 package com.example.mymoviedatabase.view.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviedatabase.R
-import com.example.mymoviedatabase.model.Movie
-import com.example.mymoviedatabase.view.fragments.MainFragment
+import com.example.retrofittest2.Result
 
-class PopListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
-    RecyclerView.Adapter<PopListAdapter.MainViewHolder>() {
 
-    private var movieData: List<Movie> = listOf()
+class PopListAdapter(val movies: List<Result>, private val onClickListener: (View, Result) -> Unit): RecyclerView.Adapter<MoviesViewHolder>() {
 
-    fun setMovieList(data: List<Movie>) {
-        movieData = data
-        notifyDataSetChanged()
-    }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): MainViewHolder {
-        return MainViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.main_fragment_recycler_item, parent, false) as View
-        )
-    }
-
-    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.bind(movieData[position])
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.main_fragment_recycler_item, parent, false)
+        return MoviesViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return movieData.size
+        return movies.size
     }
 
-    fun removeListener() {
-        onItemViewClickListener = null
-    }
+    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
+        val moviesList = movies[position]
 
-    inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(movie: Movie) {
-            itemView.apply {
-                findViewById<TextView>(R.id.main_name).text = movie.name
-                findViewById<TextView>(R.id.main_realesed).text = movie.realisedAt.toString()
-                findViewById<TextView>(R.id.main_genre).text = movie.genre
-
-                setOnClickListener {
-                    onItemViewClickListener?.onItemViewClick(movie)
-                }
-            }
+        holder.itemView.setOnClickListener { view ->
+            onClickListener.invoke(view, moviesList)
         }
 
-//        fun bind(movie: Movie) {
-//            itemView.findViewById<TextView>(R.id.main_name).text = movie.name
-//            itemView.findViewById<TextView>(R.id.main_realesed).text = movie.realisedAt.toString()
-//            itemView.findViewById<TextView>(R.id.main_genre).text = movie.genre
-//
-//            itemView.setOnClickListener {
-//                onItemViewClickListener?.onItemViewClick(movie)
-//            }
-//        }
+        return holder.bind(movies[position])
     }
 }
+
+class MoviesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    private val title:TextView = itemView.findViewById(R.id.main_name)
+    private val rating:TextView = itemView.findViewById(R.id.main_rating)
+    private val realised:TextView = itemView.findViewById(R.id.main_realesed)
+
+    fun bind(movie: Result) {
+        title.text = "Title: "+ movie.title
+        realised.text = "Realised at : "+ movie.release_date
+        rating.text = "Rating : " + movie.vote_average
+
+    }
+
+}
+

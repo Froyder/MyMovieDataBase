@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.databinding.MovieFragmentBinding
+import com.example.retrofittest2.Result
 
 class MovieFragment: Fragment() {
 
@@ -35,12 +36,11 @@ class MovieFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.getParcelable<Movie>(BUNDLE_EXTRA)?.let { it ->
-            binding.movieName.text = it.name
-            binding.movieRealised.text = it.realisedAt.toString()
-            binding.movieGenre.text = it.genre
-            binding.movieRating.text = it.rating.toString()
-            binding.movieDescription.text = it.description
+        arguments?.getParcelable<Result>(BUNDLE_EXTRA)?.let { it ->
+            binding.movieName.text = it.title
+            binding.movieRealised.text = it.release_date
+            binding.movieRating.text = it.vote_average.toString()
+            binding.movieDescription.text = it.overview
         }
     }
 
