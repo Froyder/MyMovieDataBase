@@ -4,12 +4,12 @@
     android:id="@+id/itemContainer"
     android:layout_margin="5dp"
     android:layout_width="130dp"
-    android:layout_height="200dp">
+    android:layout_height="250dp">
 
     <ImageView
         android:id="@+id/main_poster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="140dp"
         android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

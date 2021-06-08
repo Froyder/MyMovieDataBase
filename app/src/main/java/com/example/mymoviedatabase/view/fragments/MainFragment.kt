@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.databinding.MainFragmentBinding
 import com.example.mymoviedatabase.model.Movie
-import com.example.mymoviedatabase.view.adapters.NewListAdapter
-import com.example.mymoviedatabase.view.adapters.PopListAdapter
+import com.example.mymoviedatabase.view.adapters.MDBAdapter
 import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
 import com.example.retrofittest2.*
@@ -23,7 +22,6 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class MainFragment : Fragment() {
 
@@ -103,7 +101,7 @@ class MainFragment : Fragment() {
                     binding.topListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = PopListAdapter(response.body()!!.results, onClickListener = { view, movie ->
+                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, movie ->
                             activity?.supportFragmentManager?.apply {
                                 beginTransaction()
                                         .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
@@ -133,7 +131,7 @@ class MainFragment : Fragment() {
                     binding.popListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = PopListAdapter(response.body()!!.results, onClickListener = { view, movie ->
+                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, movie ->
                             activity?.supportFragmentManager?.apply {
                                     beginTransaction()
                                     .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {

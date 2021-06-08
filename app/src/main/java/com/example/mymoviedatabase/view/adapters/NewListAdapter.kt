@@ -9,7 +9,7 @@ import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.view.fragments.MainFragment
 
-class   NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
+class NewListAdapter (private var onItemViewClickListener: MainFragment.OnItemViewClickListener?):
     RecyclerView.Adapter<NewListAdapter.MainViewHolder>() {
 
     private var movieData: List<Movie> = listOf()
