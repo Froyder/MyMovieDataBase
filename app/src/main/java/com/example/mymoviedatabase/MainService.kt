@@ -4,7 +4,6 @@ import android.app.IntentService
 import android.content.Intent
 import com.example.mymoviedatabase.view.fragments.BROADCAST_INTENT_FILTER
 
-private const val TAG = "MainServiceTAG"
 const val MAIN_SERVICE_STRING_EXTRA = "Loaded from TMDB"
 
 class MainService(name: String = "MainService") : IntentService(name) {

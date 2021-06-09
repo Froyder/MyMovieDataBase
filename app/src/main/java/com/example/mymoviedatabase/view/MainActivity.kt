@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         //registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
-        //registerReceiver(receiver, IntentFilter(CONNECTIVITY_ACTION))
+        registerReceiver(receiver, IntentFilter(CONNECTIVITY_ACTION))
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.search) {
-            Toast.makeText(this, "Search", Toast.LENGTH_LONG).show()
+
         }
 
         if (item.itemId == R.id.about_button) {

@@ -111,11 +111,11 @@ class MainFragment : Fragment() {
                 initPopList()
             })
         }
-
         return binding.root
     }
 
     private fun initTopList() {
+        binding.topListLoadingLayout.show()
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
         val call = request.getTopMovies(getString(R.string.api_key))
 
@@ -123,6 +123,7 @@ class MainFragment : Fragment() {
 
             override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
                 if (response.isSuccessful){
+                    binding.topListLoadingLayout.hide()
                     binding.topListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -137,8 +138,10 @@ class MainFragment : Fragment() {
                                         .commitAllowingStateLoss()
                             }})
                     }
+                    binding.topListRecyclerView.show()
                 }
             }
+
             override fun onFailure(call: Call<Movies>, t: Throwable) {
                 Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
             }
@@ -146,13 +149,14 @@ class MainFragment : Fragment() {
     }
 
     private fun initPopList() {
+        binding.popListLoadingLayout.show()
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
         val call = request.getPopularMovies(getString(R.string.api_key))
 
         call.enqueue(object : Callback<Movies>{
-
             override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
                 if (response.isSuccessful){
+                    binding.popListLoadingLayout.hide()
                     binding.popListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
