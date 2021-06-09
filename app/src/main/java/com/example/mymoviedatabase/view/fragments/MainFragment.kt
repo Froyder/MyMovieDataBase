@@ -1,5 +1,9 @@
 package com.example.mymoviedatabase.view.fragments
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +15,8 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mymoviedatabase.MAIN_SERVICE_STRING_EXTRA
+import com.example.mymoviedatabase.MainService
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.databinding.MainFragmentBinding
 import com.example.mymoviedatabase.model.Movie
@@ -23,10 +29,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+const val BROADCAST_INTENT_FILTER = "BROADCAST INTENT FILTER"
+
 class MainFragment : Fragment() {
 
     companion object {
         fun newInstance() = MainFragment()
+    }
+
+    private val fragmentReceiver: BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context, intent: Intent) {
+            //Достаём данные из интента
+            intent.getStringExtra(MAIN_SERVICE_STRING_EXTRA)?.let {
+                binding.statusTv.text = MAIN_SERVICE_STRING_EXTRA
+            }
+        }
     }
 
     //private lateinit var viewModel: MainViewModel
@@ -34,7 +51,9 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Use the Kotlin extension in the fragment-ktx artifact
+
+        context?.registerReceiver(fragmentReceiver, IntentFilter(BROADCAST_INTENT_FILTER))
+
         setFragmentResultListener("request") { requestKey, bundle ->
             when (bundle.getString("key")) {
                 "Only popular" -> {
@@ -68,6 +87,7 @@ class MainFragment : Fragment() {
     override fun onDestroy() {
         //newListAdapter.removeListener()
         //popListAdapter.removeListener()
+
         super.onDestroy()
     }
 
@@ -82,10 +102,15 @@ class MainFragment : Fragment() {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
         //binding.newListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+       //initPopList()
+       //initTopList()
 
-       initPopList()
-
-       initTopList()
+        context?.let {
+            it.startService(Intent(it, MainService::class.java).apply {
+                initTopList()
+                initPopList()
+            })
+        }
 
         return binding.root
     }
@@ -105,7 +130,7 @@ class MainFragment : Fragment() {
                             activity?.supportFragmentManager?.apply {
                                 beginTransaction()
                                         .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
-                                            Toast.makeText(context, "Load Movie Page", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, "Loading Movie Page", Toast.LENGTH_SHORT).show()
                                             putParcelable(MovieFragment.BUNDLE_EXTRA, result)
                                         }))
                                         .addToBackStack("")
@@ -135,7 +160,7 @@ class MainFragment : Fragment() {
                             activity?.supportFragmentManager?.apply {
                                     beginTransaction()
                                     .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
-                                        Toast.makeText(context, "Load Movie Page", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Loading Movie Page", Toast.LENGTH_SHORT).show()
                                         putParcelable(MovieFragment.BUNDLE_EXTRA, result)
                                     }))
                                     .addToBackStack("")
@@ -171,7 +196,7 @@ class MainFragment : Fragment() {
                 //popListAdapter.setMovieList(appState.popMovieList)
             }
             is AppState.Loading -> {
-                Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_SHORT).show()
+                //Snackbar.make(binding.statusTv, "Loading...", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Error -> {
                 binding.mainFragmentRootView.snackBarCreateAndShow(

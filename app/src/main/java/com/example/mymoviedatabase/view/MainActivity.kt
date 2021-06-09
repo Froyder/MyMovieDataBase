@@ -1,27 +1,43 @@
 package com.example.mymoviedatabase.view
 
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mymoviedatabase.MainBroadcastReceiver
+import com.example.mymoviedatabase.MainService
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.view.fragments.MainFragment
 import com.example.mymoviedatabase.view.fragments.SettingsFragment
+import kotlinx.android.synthetic.main.main_activity.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
+    private val receiver = MainBroadcastReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        //registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
+        //registerReceiver(receiver, IntentFilter(CONNECTIVITY_ACTION))
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(receiver)
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.search) {
             Toast.makeText(this, "Search", Toast.LENGTH_LONG).show()
-
         }
 
         if (item.itemId == R.id.about_button) {
@@ -50,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         if (item.itemId == R.id.back_button) {
                 supportFragmentManager.popBackStack()
         }
-
         return super.onOptionsItemSelected(item)
     }
 }
