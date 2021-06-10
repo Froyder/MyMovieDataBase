@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.bumptech.glide.Glide
 import com.example.mymoviedatabase.R
 import com.example.retrofittest2.Result
@@ -40,7 +41,9 @@ class MoviesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     private val poster:ImageView = itemView.findViewById(R.id.main_poster)
 
     fun bind(movie: Result) {
-        Glide.with(itemView.context).load("http://image.tmdb.org/t/p/w500${movie.poster_path}").into(poster)
+        poster.load("http://image.tmdb.org/t/p/w500${movie.poster_path}") // Loading poster via Coil
+        
+        //Glide.with(itemView.context).load("http://image.tmdb.org/t/p/w500${movie.poster_path}").into(poster)
         title.text = "Title: "+ movie.title
         realised.text = "Realised at : "+ movie.release_date
         rating.text = "Rating : " + movie.vote_average
