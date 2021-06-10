@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.api.load
 import com.bumptech.glide.Glide
 import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.databinding.MovieFragmentBinding
@@ -39,7 +40,7 @@ class MovieFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Result>(BUNDLE_EXTRA)?.let { it ->
-            context?.let { it1 -> Glide.with(it1).load("http://image.tmdb.org/t/p/w500${it.poster_path}").into(poster) }
+            context?.let { it1 -> poster.load("http://image.tmdb.org/t/p/w500${it.poster_path}")}
             binding.movieName.text = it.title
             binding.movieRealised.text = "Realised at: \n"+ it.release_date
             binding.movieRating.text = "Rating: "+ it.vote_average.toString()
