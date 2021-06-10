@@ -1,5 +1,6 @@
 package com.example.mymoviedatabase.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,15 +36,32 @@ class SettingsFragment: Fragment() {
         binding.acceptButton.setOnClickListener {
             val selected : Int = binding.radioGroup.checkedRadioButtonId
             if (selected.equals(binding.radioButton1.id)) {
-                setFragmentResult("request",
+                setFragmentResult(
+                    "request",
                     bundleOf("key" to "Only popular")
                 )
+
+                activity?.let {
+                    with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                        putString(LIST_SETTINGS, "blue")
+                        apply()
+                    }
+
+                }
+
             } else if (selected.equals(binding.radioButton2.id)) {
                 setFragmentResult(
                     "request",
                     bundleOf("key" to "Only top")
                 )
-            } else if (selected.equals(binding.radioButton3.id)) {
+
+                activity?.let {
+                    with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                        putString(LIST_SETTINGS, "green")
+                        apply()
+                    }
+                }
+            }else if (selected.equals(binding.radioButton3.id)) {
                 setFragmentResult(
                     "request",
                     bundleOf("key" to "Both lists")

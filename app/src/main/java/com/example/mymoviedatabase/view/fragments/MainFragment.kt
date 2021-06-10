@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 const val BROADCAST_INTENT_FILTER = "BROADCAST INTENT FILTER"
+const val LIST_SETTINGS = "LIST_SETTINGS_KEY"
+var FIRST_RUN : Boolean = true
 
 class MainFragment : Fragment() {
 
@@ -41,12 +44,11 @@ class MainFragment : Fragment() {
         override fun onReceive(context: Context, intent: Intent) {
             //Достаём данные из интента
             intent.getStringExtra(MAIN_SERVICE_STRING_EXTRA)?.let {
-                binding.statusTv.text = MAIN_SERVICE_STRING_EXTRA
+                Toast.makeText(context, MAIN_SERVICE_STRING_EXTRA, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    //private lateinit var viewModel: MainViewModel
     private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,20 +56,69 @@ class MainFragment : Fragment() {
 
         context?.registerReceiver(fragmentReceiver, IntentFilter(BROADCAST_INTENT_FILTER))
 
-        setFragmentResultListener("request") { requestKey, bundle ->
-            when (bundle.getString("key")) {
-                "Only popular" -> {
-                    binding.topListRecyclerView.hide()
-                    binding.topHeaderTv.hide()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    private var _binding: MainFragmentBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
+
+        if (FIRST_RUN) {
+            showLists(activity?.getPreferences(Context.MODE_PRIVATE)?.getString(LIST_SETTINGS, ""))
+            FIRST_RUN = false
+        } else {
+            showLists(activity?.getPreferences(Context.MODE_PRIVATE)?.getString(LIST_SETTINGS, ""))
+
+            setFragmentResultListener("request") { requestKey, bundle ->
+
+                showLists(bundle.getString("key"))
+
+                activity?.let {
+                    with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                        putString(LIST_SETTINGS, bundle.getString("key"))
+                        apply()
+                    }
                 }
-                "Only top" -> {
-                    binding.popListRecyclerView.hide()
-                    binding.popularHeaderTv.hide()
-                }
-                else -> null
             }
-            binding.statusTv.text = bundle.getString("key")
         }
+
+        context?.let {
+            it.startService(Intent(it, MainService::class.java).apply {
+                initTopList()
+                initPopList()
+            })
+        }
+
+        return binding.root
+    }
+
+    private fun showLists(listsSettings : String?) {
+        when (listsSettings) {
+            "Only popular" -> {
+                binding.topListRecyclerView.hide()
+                binding.topHeaderTv.hide()
+            }
+            "Only top" -> {
+                binding.popListRecyclerView.hide()
+                binding.popularHeaderTv.hide()
+            }
+            "Both lists" -> {
+                binding.popListRecyclerView.show()
+                binding.popularHeaderTv.show()
+                binding.topListRecyclerView.show()
+                binding.topHeaderTv.show()
+            }
+        }
+        binding.statusTv.text = listsSettings
     }
 
     fun View.show() : View {
@@ -82,36 +133,6 @@ class MainFragment : Fragment() {
             visibility = View.GONE
         }
         return this
-    }
-
-    override fun onDestroy() {
-        //newListAdapter.removeListener()
-        //popListAdapter.removeListener()
-
-        super.onDestroy()
-    }
-
-    private var _binding: MainFragmentBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
-
-        //binding.newListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-       //initPopList()
-       //initTopList()
-
-        context?.let {
-            it.startService(Intent(it, MainService::class.java).apply {
-                initTopList()
-                initPopList()
-            })
-        }
-        return binding.root
     }
 
     private fun initTopList() {
@@ -138,7 +159,6 @@ class MainFragment : Fragment() {
                                         .commitAllowingStateLoss()
                             }})
                     }
-                    binding.topListRecyclerView.show()
                 }
             }
 
