@@ -34,8 +34,11 @@ class SettingsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.acceptButton.setOnClickListener {
-            val selected : Int = binding.radioGroup.checkedRadioButtonId
-            if (selected.equals(binding.radioButton1.id)) {
+            val listSettings : Int = binding.radioGroup.checkedRadioButtonId
+
+            val adultSettings : Int = binding.radioGroup2.checkedRadioButtonId
+
+            if (listSettings.equals(binding.radioButton1.id)) {
                 setFragmentResult(
                     "request",
                     bundleOf("key" to "Only popular")
@@ -46,10 +49,9 @@ class SettingsFragment: Fragment() {
                         putString(LIST_SETTINGS, "blue")
                         apply()
                     }
-
                 }
 
-            } else if (selected.equals(binding.radioButton2.id)) {
+            } else if (listSettings.equals(binding.radioButton2.id)) {
                 setFragmentResult(
                     "request",
                     bundleOf("key" to "Only top")
@@ -61,12 +63,31 @@ class SettingsFragment: Fragment() {
                         apply()
                     }
                 }
-            }else if (selected.equals(binding.radioButton3.id)) {
+            }else if (listSettings.equals(binding.radioButton3.id)) {
                 setFragmentResult(
                     "request",
                     bundleOf("key" to "Both lists")
                 )
             }
+
+            if (adultSettings.equals(binding.radioButton4.id)) {
+                activity?.let {
+                    with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                       putString(ADULT_SETTINGS, "Adult On")
+                       putBoolean("ADULT_CONTENT", true)
+                       apply()
+                    }
+                }
+            } else if (adultSettings.equals(binding.radioButton5.id)) {
+                activity?.let {
+                    with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                        putString(ADULT_SETTINGS, "Adult Off")
+                        putBoolean("ADULT_CONTENT", false)
+                        apply()
+                    }
+                }
+            }
+
             activity?.supportFragmentManager?.popBackStack()
         }
     }

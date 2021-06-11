@@ -26,4 +26,7 @@
     <string name="movie_budget">Budget</string>
     <string name="movie_rating">Movie rating</string>
     <string name="poster">Poster</string>
+    <string name="adult_settings">Adult content</string>
+    <string name="adult_show">Show adult content</string>
+    <string name="adult_hide">Don\'t show adult content</string>
 </resources>

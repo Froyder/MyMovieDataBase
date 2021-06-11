@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.bumptech.glide.Glide
 import com.example.mymoviedatabase.R
+import com.example.mymoviedatabase.view.MainActivity
+import com.example.mymoviedatabase.view.fragments.ADULT_SETTINGS
 import com.example.retrofittest2.Result
 
 class MDBAdapter (val movies: List<Result>, private val onClickListener: (View, Result) -> Unit): RecyclerView.Adapter<MoviesViewHolder>() {
@@ -41,14 +43,12 @@ class MoviesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
     private val poster:ImageView = itemView.findViewById(R.id.main_poster)
 
     fun bind(movie: Result) {
-        poster.load("http://image.tmdb.org/t/p/w500${movie.poster_path}") // Loading poster via Coil
-        
-        //Glide.with(itemView.context).load("http://image.tmdb.org/t/p/w500${movie.poster_path}").into(poster)
-        title.text = "Title: "+ movie.title
-        realised.text = "Realised at : "+ movie.release_date
-        rating.text = "Rating : " + movie.vote_average
 
+            poster.load("http://image.tmdb.org/t/p/w500${movie.poster_path}") // Loading poster via Coil
+            //Glide.with(itemView.context).load("http://image.tmdb.org/t/p/w500${movie.poster_path}").into(poster)
+            title.text = "Title: " + movie.title
+            realised.text = "Realised at : " + movie.release_date
+            rating.text = "Rating : " + movie.vote_average
     }
-
 }
 

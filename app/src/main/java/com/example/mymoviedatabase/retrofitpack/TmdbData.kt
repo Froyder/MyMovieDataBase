@@ -10,6 +10,7 @@ data class Movies(
 @Parcelize
 data class Result(
     val id: Int,
+    val adult : Boolean,
     val overview: String,
     val budget: Int,
     val genre_name: String,

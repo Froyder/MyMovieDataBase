@@ -4,12 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -29,9 +27,12 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Query
+import java.lang.reflect.Array
 
 const val BROADCAST_INTENT_FILTER = "BROADCAST INTENT FILTER"
 const val LIST_SETTINGS = "LIST_SETTINGS_KEY"
+var ADULT_SETTINGS = "ADULT_SETTINGS"
 var FIRST_RUN : Boolean = true
 
 class MainFragment : Fragment() {
@@ -72,15 +73,18 @@ class MainFragment : Fragment() {
     ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
 
+        val listsSettings = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(LIST_SETTINGS, "")
+        val adultSettings = activity?.getPreferences(Context.MODE_PRIVATE)?.getString(ADULT_SETTINGS,"true")
+
         if (FIRST_RUN) {
-            showLists(activity?.getPreferences(Context.MODE_PRIVATE)?.getString(LIST_SETTINGS, ""))
+            showLists(listsSettings, adultSettings)
             FIRST_RUN = false
         } else {
-            showLists(activity?.getPreferences(Context.MODE_PRIVATE)?.getString(LIST_SETTINGS, ""))
+            showLists(listsSettings, adultSettings)
 
             setFragmentResultListener("request") { requestKey, bundle ->
 
-                showLists(bundle.getString("key"))
+                showLists(bundle.getString("key"),bundle.getString(ADULT_SETTINGS))
 
                 activity?.let {
                     with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
@@ -101,7 +105,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    private fun showLists(listsSettings : String?) {
+    private fun showLists(listsSettings : String?, adultSettings : String?) {
         when (listsSettings) {
             "Only popular" -> {
                 binding.topListRecyclerView.hide()
@@ -118,7 +122,7 @@ class MainFragment : Fragment() {
                 binding.topHeaderTv.show()
             }
         }
-        binding.statusTv.text = listsSettings
+        binding.statusTv.text = "$listsSettings, $adultSettings"
     }
 
     fun View.show() : View {
@@ -136,9 +140,10 @@ class MainFragment : Fragment() {
     }
 
     private fun initTopList() {
+        val ADULT_CONTENT = activity?.getPreferences(Context.MODE_PRIVATE)?.getBoolean("ADULT_CONTENT",true)
         binding.topListLoadingLayout.show()
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
-        val call = request.getTopMovies(getString(R.string.api_key))
+        val call = request.getTopMovies(getString(R.string.api_key), "ru", ADULT_CONTENT)
 
         call.enqueue(object : Callback<Movies>{
 
@@ -169,10 +174,10 @@ class MainFragment : Fragment() {
     }
 
     private fun initPopList() {
+        val ADULT_CONTENT = activity?.getPreferences(Context.MODE_PRIVATE)?.getBoolean("ADULT_CONTENT",true)
         binding.popListLoadingLayout.show()
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
-        val call = request.getPopularMovies(getString(R.string.api_key))
-
+        val call = request.getPopularMovies(getString(R.string.api_key), "ru", ADULT_CONTENT)
         call.enqueue(object : Callback<Movies>{
             override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
                 if (response.isSuccessful){
