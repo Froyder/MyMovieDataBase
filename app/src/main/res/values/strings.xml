@@ -29,4 +29,7 @@
     <string name="adult_settings">Adult content</string>
     <string name="adult_show">Show adult content</string>
     <string name="adult_hide">Don\'t show adult content</string>
+    <string name="history">History</string>
+    <string name="movie_note_header">My note</string>
+    <string name="save_note">Save note</string>
 </resources>

@@ -11,15 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.MainBroadcastReceiver
 import com.example.mymoviedatabase.MainService
 import com.example.mymoviedatabase.R
+import com.example.mymoviedatabase.view.fragments.HistoryFragment
 import com.example.mymoviedatabase.view.fragments.MainFragment
 import com.example.mymoviedatabase.view.fragments.SettingsFragment
 import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
     private val receiver = MainBroadcastReceiver()
+
+    companion object {
+        fun newInstance() = MainActivity()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.search) {
-
         }
 
         if (item.itemId == R.id.about_button) {
@@ -58,13 +64,20 @@ class MainActivity : AppCompatActivity() {
         if (item.itemId == R.id.settings) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, SettingsFragment())
-                .addToBackStack(null)
-                .commit()
+                .addToBackStack("")
+                    .commitAllowingStateLoss()
         }
 
         if (item.itemId == R.id.back_button) {
-                supportFragmentManager.popBackStack()
+            supportFragmentManager.popBackStack()
         }
+
+        if (item.itemId == R.id.history) {
+                    supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, HistoryFragment())
+                            .addToBackStack("")
+                            .commitAllowingStateLoss()
+                }
         return super.onOptionsItemSelected(item)
     }
 }

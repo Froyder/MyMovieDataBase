@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/poster"
+        android:layout_width="198dp"
+        android:layout_height="268dp"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/poster"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movie_note_header"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:id="@+id/movie_note_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/movie_note_header"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="9dp" />
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:layout_marginBottom="241dp"
+        android:hint="@string/movie_name"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/movieRealised"
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/movie_note_header" />
+
+    <TextView
+        android:id="@+id/movieRealised"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_margin="15dp"
+        android:layout_marginBottom="241dp"
+        android:hint="@string/movie_released"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/description_view"
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/movie_note_header" />
+
+    <TextView
+        android:id="@+id/movieRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:hint="@string/movie_raitng"
+        android:textSize="20sp"
+
+        app:layout_constraintStart_toEndOf="@id/poster"
+        app:layout_constraintTop_toBottomOf="@id/movieRealised" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/description_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:fillViewport="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/poster">
+
+        <EditText
+            android:id="@+id/movieNote"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:hint="@string/descritption"
+            android:textSize="20sp"
+            android:autofillHints="" />
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_note"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description_view">
+
+    </com.google.android.material.button.MaterialButton>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

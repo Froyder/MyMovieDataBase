@@ -17,8 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviedatabase.MAIN_SERVICE_STRING_EXTRA
 import com.example.mymoviedatabase.MainService
 import com.example.mymoviedatabase.R
+import com.example.mymoviedatabase.app.App.Companion.getHistoryDao
 import com.example.mymoviedatabase.databinding.MainFragmentBinding
 import com.example.mymoviedatabase.model.Movie
+import com.example.mymoviedatabase.room.LocalRepository
+import com.example.mymoviedatabase.room.LocalRepositoryImpl
 import com.example.mymoviedatabase.view.adapters.MDBAdapter
 import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
@@ -27,8 +30,7 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Query
-import java.lang.reflect.Array
+import kotlinx.coroutines.*
 
 const val BROADCAST_INTENT_FILTER = "BROADCAST INTENT FILTER"
 const val LIST_SETTINGS = "LIST_SETTINGS_KEY"
@@ -51,9 +53,12 @@ class MainFragment : Fragment() {
     }
 
     private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+    val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 
         context?.registerReceiver(fragmentReceiver, IntentFilter(BROADCAST_INTENT_FILTER))
 
@@ -78,6 +83,7 @@ class MainFragment : Fragment() {
 
         if (FIRST_RUN) {
             showLists(listsSettings, adultSettings)
+            binding.statusTv.text = "$listsSettings, $adultSettings"
             FIRST_RUN = false
         } else {
             showLists(listsSettings, adultSettings)
@@ -95,13 +101,12 @@ class MainFragment : Fragment() {
             }
         }
 
-        context?.let {
-            it.startService(Intent(it, MainService::class.java).apply {
-                initTopList()
-                initPopList()
-            })
-        }
-
+                 context?.let {
+                    it.startService(Intent(it, MainService::class.java).apply {
+                        initTopList()
+                        initPopList()
+                    })
+                }
         return binding.root
     }
 
@@ -139,7 +144,7 @@ class MainFragment : Fragment() {
         return this
     }
 
-    private fun initTopList() {
+     private fun initTopList() {
         val ADULT_CONTENT = activity?.getPreferences(Context.MODE_PRIVATE)?.getBoolean("ADULT_CONTENT",true)
         binding.topListLoadingLayout.show()
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
@@ -153,16 +158,17 @@ class MainFragment : Fragment() {
                     binding.topListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, result ->
+                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, movie ->
                             activity?.supportFragmentManager?.apply {
+                                historyRepository.saveEntity(movie)
                                 beginTransaction()
-                                        .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
-                                            Toast.makeText(context, "Loading Movie Page", Toast.LENGTH_SHORT).show()
-                                            putParcelable(MovieFragment.BUNDLE_EXTRA, result)
-                                        }))
-                                        .addToBackStack("")
-                                        .commitAllowingStateLoss()
-                            }})
+                                    .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
+                                        Toast.makeText(context, "Loading Movie Page", Toast.LENGTH_SHORT).show()
+                                        putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
+                                    }))
+                                    .addToBackStack("")
+                                    .commitAllowingStateLoss()
+                        }})
                     }
                 }
             }
@@ -173,7 +179,7 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun initPopList() {
+     private fun initPopList() {
         val ADULT_CONTENT = activity?.getPreferences(Context.MODE_PRIVATE)?.getBoolean("ADULT_CONTENT",true)
         binding.popListLoadingLayout.show()
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
@@ -185,12 +191,13 @@ class MainFragment : Fragment() {
                     binding.popListRecyclerView.apply {
                         setHasFixedSize(true)
                         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, result ->
+                        adapter = MDBAdapter(response.body()!!.results, onClickListener = { view, movie ->
                             activity?.supportFragmentManager?.apply {
-                                    beginTransaction()
+                                historyRepository.saveEntity(movie)
+                                beginTransaction()
                                     .replace(R.id.container, MovieFragment.newInstance(Bundle().apply {
                                         Toast.makeText(context, "Loading Movie Page", Toast.LENGTH_SHORT).show()
-                                        putParcelable(MovieFragment.BUNDLE_EXTRA, result)
+                                        putParcelable(MovieFragment.BUNDLE_EXTRA, movie)
                                     }))
                                     .addToBackStack("")
                                     .commitAllowingStateLoss()

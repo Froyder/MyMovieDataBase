@@ -1,6 +1,5 @@
 package com.example.mymoviedatabase.view.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.bumptech.glide.Glide
 import com.example.mymoviedatabase.R
-import com.example.mymoviedatabase.view.MainActivity
-import com.example.mymoviedatabase.view.fragments.ADULT_SETTINGS
 import com.example.retrofittest2.Result
 
 class MDBAdapter (val movies: List<Result>, private val onClickListener: (View, Result) -> Unit): RecyclerView.Adapter<MoviesViewHolder>() {

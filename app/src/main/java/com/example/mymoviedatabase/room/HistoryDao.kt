@@ -8,7 +8,7 @@ interface HistoryDao {
     @Query("SELECT * FROM HistoryEntity")
     fun all(): List<HistoryEntity>
 
-    @Query("SELECT * FROM HistoryEntity WHERE movie LIKE :movie")
+    @Query("SELECT * FROM HistoryEntity WHERE title LIKE :movie")
     fun getDataByWord(movie: String): List<HistoryEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
