@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.MainBroadcastReceiver
 import com.example.mymoviedatabase.MainService
 import com.example.mymoviedatabase.R
+import com.example.mymoviedatabase.view.fragments.ContentProviderFragment
 import com.example.mymoviedatabase.view.fragments.HistoryFragment
 import com.example.mymoviedatabase.view.fragments.MainFragment
 import com.example.mymoviedatabase.view.fragments.SettingsFragment
@@ -77,7 +78,17 @@ class MainActivity : AppCompatActivity() {
                             .replace(R.id.container, HistoryFragment())
                             .addToBackStack("")
                             .commitAllowingStateLoss()
-                }
+        }
+        if (item.itemId == R.id.menu_content_provider) {
+            supportFragmentManager.apply {
+                beginTransaction()
+                    .replace(R.id.container, ContentProviderFragment.newInstance())
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
+            true
+        }
+
         return super.onOptionsItemSelected(item)
     }
 }

@@ -43,4 +43,13 @@
         android:layout_height="wrap_content"
         android:title="@string/history" />
 
+    <item
+        android:id="@+id/menu_content_provider"
+        android:title="@string/contacts"
+        android:icon="@android:drawable/ic_menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </menu>
