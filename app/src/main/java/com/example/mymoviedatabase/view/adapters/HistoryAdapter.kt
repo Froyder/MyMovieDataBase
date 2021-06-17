@@ -1,7 +1,7 @@
 package com.example.mymoviedatabase.view.adapters
 
-import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +9,18 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.view.MainActivity
-import com.example.mymoviedatabase.view.fragments.MovieFragment
 import com.example.mymoviedatabase.view.fragments.NoteFragment
+import com.example.retrofittest2.Movies
 import com.example.retrofittest2.Result
+import com.example.retrofittest2.ServiceBuilder
+import com.example.retrofittest2.TmdbEndpoints
+import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.android.synthetic.main.history_fragment_recycler_item.view.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder>() {
 
@@ -45,20 +53,35 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolde
         fun bind(data: Result) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
 
-                itemView.historyRecyclerViewItem.text =
-                        String.format("\"%s\", rating: %s, realised: %s", data.title,  data.vote_average, data.release_date)
-                itemView.setOnClickListener {
-                    Toast.makeText(itemView.context,  "on click: ${data.title}", Toast.LENGTH_SHORT).show()
+                runBlocking {
+                    launch {
+                        itemView.historyRecyclerViewItem.text =
+                            String.format(
+                                "\"%s\", rating: %s, realised: %s",
+                                data.title,
+                                data.vote_average,
+                                data.release_date
+                            )
+                    }
+                    itemView.setOnClickListener {
+                        Toast.makeText(
+                            itemView.context,
+                            "on click: ${data.title}",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    activity?.supportFragmentManager?.apply {
-                        beginTransaction()
-                                .replace(R.id.container, NoteFragment.newInstance(Bundle().apply {
-                                    putParcelable(NoteFragment.BUNDLE_EXTRA, data)
-                                }))
+                        activity?.supportFragmentManager?.apply {
+                            beginTransaction()
+                                .replace(
+                                    R.id.container,
+                                    NoteFragment.newInstance(Bundle().apply {
+                                        putParcelable(NoteFragment.BUNDLE_EXTRA, data)
+                                    })
+                                )
                                 .addToBackStack("")
                                 .commitAllowingStateLoss()
+                        }
                     }
-
                 }
             }
         }

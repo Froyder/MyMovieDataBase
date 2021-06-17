@@ -1,6 +1,5 @@
 package com.example.mymoviedatabase.view
 
-import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager.CONNECTIVITY_ACTION
 import android.os.Bundle
@@ -9,17 +8,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mymoviedatabase.MainBroadcastReceiver
-import com.example.mymoviedatabase.MainService
 import com.example.mymoviedatabase.R
-import com.example.mymoviedatabase.view.fragments.ContentProviderFragment
-import com.example.mymoviedatabase.view.fragments.HistoryFragment
-import com.example.mymoviedatabase.view.fragments.MainFragment
-import com.example.mymoviedatabase.view.fragments.SettingsFragment
-import kotlinx.android.synthetic.main.main_activity.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.mymoviedatabase.view.fragments.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,6 +77,13 @@ class MainActivity : AppCompatActivity() {
                     .commitAllowingStateLoss()
             }
             true
+        }
+
+        if (item.itemId == R.id.menu_google_maps) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, GoogleMapsFragment())
+                .addToBackStack("")
+                .commitAllowingStateLoss()
         }
 
         return super.onOptionsItemSelected(item)

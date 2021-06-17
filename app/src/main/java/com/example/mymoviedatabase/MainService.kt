@@ -16,7 +16,6 @@ class MainService(name: String = "MainService") : IntentService(name) {
         }
     }
 
-
     override fun onCreate() {
         super.onCreate()
     }

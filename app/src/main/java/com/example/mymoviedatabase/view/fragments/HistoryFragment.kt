@@ -16,11 +16,15 @@ import com.example.mymoviedatabase.room.LocalRepositoryImpl
 import com.example.mymoviedatabase.view.MainActivity
 import com.example.mymoviedatabase.view.adapters.HistoryAdapter
 import com.example.mymoviedatabase.viewmodel.HistoryViewModel
+import com.example.retrofittest2.Result
 import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HistoryFragment: Fragment() {
 
@@ -37,10 +41,13 @@ class HistoryFragment: Fragment() {
     private var _binding: HistoryFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HistoryViewModel by lazy { ViewModelProvider(this).get(HistoryViewModel::class.java) }
-    private val adapter: HistoryAdapter by lazy { HistoryAdapter()}
+    private val adapter: HistoryAdapter by lazy { HistoryAdapter() }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = HistoryFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,7 +61,6 @@ class HistoryFragment: Fragment() {
                 adapter.setData(historyRepository.getAllHistory(),activity = MainActivity())
             }
         }
+
     }
-
 }
-
