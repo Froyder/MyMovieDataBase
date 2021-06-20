@@ -8,7 +8,7 @@ import com.example.mymoviedatabase.model.RepositoryImpl
 import com.example.mymoviedatabase.room.HistoryEntity
 import com.example.mymoviedatabase.room.LocalRepository
 import com.example.mymoviedatabase.room.LocalRepositoryImpl
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Result
 
 class MainViewModel(
         private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),

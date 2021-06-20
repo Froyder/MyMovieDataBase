@@ -2,6 +2,7 @@ package com.example.mymoviedatabase.view.fragments
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -12,11 +13,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.databinding.FragmentGoogleMapsMainBinding
+import com.example.tmdbdata.ArtistTest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,7 +27,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.fragment_google_maps_main.*
 import java.io.IOException
-
 
 class GoogleMapsFragment : Fragment() {
 
@@ -34,15 +36,32 @@ class GoogleMapsFragment : Fragment() {
     private val markers: ArrayList<Marker> = arrayListOf()
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
-        val initialPlace = LatLng(52.52000659999999, 13.404953999999975)
-        googleMap.addMarker(
-                MarkerOptions().position(initialPlace).title(getString(R.string.marker_start))
-        )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(initialPlace))
-        googleMap.setOnMapClickListener { latLng ->
-            getAddressAsync(latLng)
+
+            setFragmentResultListener("placeOfBirth") { requestKey, bundle ->
+
+            val placeOfBirth = (bundle.getString("coordinates"))
+
+            binding.textAddress.text = placeOfBirth
+
+            val latFM = (bundle.getDouble("lat"))
+            val longFM = (bundle.getDouble("long"))
+
+            val initialPlace = LatLng(latFM, longFM)
+            googleMap.addMarker(
+                    MarkerOptions().position(initialPlace).title(getString(R.string.marker_start))
+            )
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialPlace, 15F))
+
+        }
+
+    googleMap.setOnMapClickListener { latLng ->
+            googleMap.clear()
+            googleMap.addMarker(
+                    MarkerOptions().position(latLng)
+            )
             binding.textAddress.text = getAddressAsync(latLng).toString()
         }
+
         googleMap.setOnMapLongClickListener { latLng ->
             getAddressAsync(latLng)
             addMarkerToArray(latLng)
@@ -58,8 +77,10 @@ class GoogleMapsFragment : Fragment() {
     ): View? {
         _binding = FragmentGoogleMapsMainBinding.inflate(inflater, container, false)
         binding.textAddress.setOnClickListener {
+            markers.clear()
             map.clear()
         }
+
         return binding.root
     }
 
@@ -98,8 +119,7 @@ class GoogleMapsFragment : Fragment() {
         )
         view.post {
             setMarker(location, searchText, R.drawable.ic_launcher_background)
-            map.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             location,
                             15f
                     )
@@ -183,7 +203,13 @@ class GoogleMapsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = GoogleMapsFragment()
+        const val BUNDLE_EXTRA = "placeOfBirth"
+        fun newInstance(bundle: Bundle): GoogleMapsFragment {
+            val fragment = GoogleMapsFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
+
 }
 

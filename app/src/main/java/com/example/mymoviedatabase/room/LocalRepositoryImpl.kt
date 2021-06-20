@@ -1,8 +1,8 @@
 package com.example.mymoviedatabase.room
 
-import com.example.retrofittest2.Result
-import com.example.retrofittest2.convertHistoryEntityToMovie
-import com.example.retrofittest2.convertMovieToEntity
+import com.example.tmdbdata.Result
+import com.example.tmdbdata.convertHistoryEntityToMovie
+import com.example.tmdbdata.convertMovieToEntity
 
 class LocalRepositoryImpl(private val localDataSource: HistoryDao) :
     LocalRepository {

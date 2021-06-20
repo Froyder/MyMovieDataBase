@@ -16,7 +16,7 @@ import com.example.mymoviedatabase.room.LocalRepositoryImpl
 import com.example.mymoviedatabase.view.MainActivity
 import com.example.mymoviedatabase.view.adapters.HistoryAdapter
 import com.example.mymoviedatabase.viewmodel.HistoryViewModel
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Result
 import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

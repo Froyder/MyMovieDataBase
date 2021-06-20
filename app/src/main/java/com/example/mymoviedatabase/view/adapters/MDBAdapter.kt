@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.example.mymoviedatabase.R
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Result
 
 class MDBAdapter (val movies: List<Result>, private val onClickListener: (View, Result) -> Unit): RecyclerView.Adapter<MoviesViewHolder>() {
 

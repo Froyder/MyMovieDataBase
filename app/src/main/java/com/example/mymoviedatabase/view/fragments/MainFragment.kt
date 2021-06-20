@@ -16,7 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -31,18 +30,21 @@ import com.example.mymoviedatabase.databinding.MainFragmentBinding
 import com.example.mymoviedatabase.model.Movie
 import com.example.mymoviedatabase.room.LocalRepository
 import com.example.mymoviedatabase.room.LocalRepositoryImpl
+import com.example.mymoviedatabase.view.adapters.ArtistsApapter
 import com.example.mymoviedatabase.view.adapters.MDBAdapter
 import com.example.mymoviedatabase.viewmodel.AppState
 import com.example.mymoviedatabase.viewmodel.MainViewModel
-import com.example.retrofittest2.*
+import com.example.retrofittest2.ServiceBuilder
+import com.example.retrofittest2.TmdbEndpoints
+import com.example.tmdbdata.ArtistResult
+import com.example.tmdbdata.Artists
+import com.example.tmdbdata.Movies
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.main_fragment.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlinx.coroutines.*
 import java.io.IOException
-import java.util.jar.Manifest
 
 const val BROADCAST_INTENT_FILTER = "BROADCAST INTENT FILTER"
 const val LIST_SETTINGS = "LIST_SETTINGS_KEY"
@@ -119,7 +121,7 @@ class MainFragment : Fragment() {
                  context?.let {
                     it.startService(Intent(it, MainService::class.java).apply {
                         initTopList()
-                        initPopList()
+                        initPopArtists()
                     })
                 }
         return binding.root
@@ -197,6 +199,7 @@ class MainFragment : Fragment() {
      private fun initPopList() {
         val ADULT_CONTENT = activity?.getPreferences(Context.MODE_PRIVATE)?.getBoolean("ADULT_CONTENT",true)
         binding.popListLoadingLayout.show()
+         binding.popularHeaderTv.text = getString(R.string.popular_header)
         val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
         val call = request.getPopularMovies(getString(R.string.api_key), "ru", ADULT_CONTENT)
         call.enqueue(object : Callback<Movies>{
@@ -221,6 +224,48 @@ class MainFragment : Fragment() {
                 }
             }
             override fun onFailure(call: Call<Movies>, t: Throwable) {
+                Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun initPopArtists() {
+        binding.popListLoadingLayout.show()
+        binding.popularHeaderTv.text = "Popular actors"
+        val request = ServiceBuilder.buildService(TmdbEndpoints::class.java)
+        val call = request.getPopularArtists(getString(R.string.api_key))
+        call.enqueue(object : Callback<Artists>{
+            override fun onResponse(call: Call<Artists>, response: Response<Artists>) {
+                if (response.isSuccessful){
+                    binding.popListLoadingLayout.hide()
+                    binding.popListRecyclerView.apply {
+                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                        adapter = ArtistsApapter(response.body()!!.results, onClickListener = { view, artist ->
+                            val artistrequest = ServiceBuilder.buildService(TmdbEndpoints::class.java)
+                            val artistcall = artistrequest.getTestArtist(artist.id, getString(R.string.api_key))
+                            artistcall.enqueue(object : Callback<ArtistResult>{
+                                override fun onResponse(call: Call<ArtistResult>, response: Response<ArtistResult>) {
+                                    activity?.supportFragmentManager?.apply {
+                                        //historyRepository.saveEntity(artist)
+                                        beginTransaction()
+                                                .replace(R.id.container, ArtistFragment.newInstance(Bundle().apply {
+                                                    Toast.makeText(context, "Loading Artist Page", Toast.LENGTH_SHORT).show()
+                                                    putParcelable(ArtistFragment.BUNDLE_EXTRA, response.body())
+                                                }))
+                                                .addToBackStack("")
+                                                .commitAllowingStateLoss()
+                                    }
+                                }
+                                override fun onFailure(call: Call<ArtistResult>, t: Throwable) {
+                                    TODO("Not yet implemented")
+                                }
+                            })
+                        })
+                    }
+                }
+            }
+            override fun onFailure(call: Call<Artists>, t: Throwable) {
                 Toast.makeText(context, "${t.message}", Toast.LENGTH_SHORT).show()
             }
         })

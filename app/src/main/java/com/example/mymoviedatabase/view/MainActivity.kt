@@ -7,9 +7,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviedatabase.MainBroadcastReceiver
 import com.example.mymoviedatabase.R
+import com.example.mymoviedatabase.view.adapters.ArtistsApapter
 import com.example.mymoviedatabase.view.fragments.*
+import com.example.retrofittest2.ServiceBuilder
+import com.example.retrofittest2.TmdbEndpoints
+import com.example.tmdbdata.ArtistTest
+import com.example.tmdbdata.Artists
+import com.example.tmdbdata.getDefaultArtist
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,6 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.search) {
+
         }
 
         if (item.itemId == R.id.about_button) {
@@ -86,6 +97,13 @@ class MainActivity : AppCompatActivity() {
                 .commitAllowingStateLoss()
         }
 
+        if (item.itemId == R.id.artist_test) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, ArtistFragment.newInstance(Bundle().apply {
+                        putParcelable(ArtistFragment.BUNDLE_EXTRA, getDefaultArtist())
+                    }))
+                    .commitAllowingStateLoss()
+        }
         return super.onOptionsItemSelected(item)
     }
 }

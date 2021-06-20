@@ -1,6 +1,6 @@
 package com.example.mymoviedatabase.room
 
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Result
 
 interface LocalRepository {
     fun getAllHistory(): List<Result>

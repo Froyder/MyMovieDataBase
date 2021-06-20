@@ -17,7 +17,7 @@ import com.example.mymoviedatabase.view.MainActivity
 import com.example.mymoviedatabase.view.adapters.HistoryAdapter
 import com.example.mymoviedatabase.viewmodel.HistoryViewModel
 import com.example.mymoviedatabase.viewmodel.MainViewModel
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Result
 import kotlinx.android.synthetic.main.history_fragment.*
 import kotlinx.android.synthetic.main.note_fragment.*
 
@@ -63,7 +63,7 @@ class NoteFragment: Fragment() {
 
     private fun saveMovie(movie: HistoryEntity) {
         viewModel.saveMovieToDB(
-                com.example.retrofittest2.Result(movie.id, movie.adult, movie.overview, movie.budget, movie.genre_name,
+                com.example.tmdbdata.Result(movie.id, movie.adult, movie.overview, movie.budget, movie.genre_name,
                         movie.poster_path, movie.release_date, movie.title, movie.vote_average, movie.vote_count)
         )
     }

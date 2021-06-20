@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviedatabase.R
 import com.example.mymoviedatabase.view.MainActivity
 import com.example.mymoviedatabase.view.fragments.NoteFragment
-import com.example.retrofittest2.Movies
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Movies
+import com.example.tmdbdata.Result
 import com.example.retrofittest2.ServiceBuilder
 import com.example.retrofittest2.TmdbEndpoints
 import kotlinx.android.synthetic.main.history_fragment.*

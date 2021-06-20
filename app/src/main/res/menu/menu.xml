@@ -53,6 +53,15 @@
         android:layout_height="wrap_content"/>
 
     <item
+        android:id="@+id/artist_test"
+        android:title="@string/artist_test"
+        android:icon="@android:drawable/ic_menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <item
         android:id="@+id/menu_google_maps"
         android:icon="@android:drawable/ic_dialog_map"
         android:title="@string/google_maps"

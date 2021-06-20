@@ -13,7 +13,7 @@ import com.example.mymoviedatabase.room.HistoryEntity
 import com.example.mymoviedatabase.room.LocalRepository
 import com.example.mymoviedatabase.room.LocalRepositoryImpl
 import com.example.mymoviedatabase.viewmodel.MainViewModel
-import com.example.retrofittest2.Result
+import com.example.tmdbdata.Result
 import kotlinx.android.synthetic.main.movie_fragment.*
 
 class MovieFragment: Fragment() {
@@ -47,7 +47,7 @@ class MovieFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Result>(BUNDLE_EXTRA)?.let { it ->
-            context?.let { it1 -> poster.load("http://image.tmdb.org/t/p/w500${it.poster_path}")}
+            context?.let { it1 -> poster.load("https://image.tmdb.org/t/p/original/${it.poster_path}")}
             binding.movieName.text = it.title
             binding.movieRealised.text = "Realised at: \n"+ it.release_date
             binding.movieRating.text = "Rating: "+ it.vote_average.toString()
