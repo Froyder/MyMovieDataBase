@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mymoviedatabase" >
+    package="com.example.mymoviedatabase">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -19,7 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMovieDataBase"
-        android:usesCleartextTraffic="true" >
+        android:usesCleartextTraffic="true">
+
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -32,12 +38,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".view.MainActivity" >
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +52,7 @@
 
         <service android:name=".MainService" />
 
-        <receiver android:name=".MainBroadcastReceiver" >
+        <receiver android:name=".MainBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.CONNECTIVITY_ACTION" />
             </intent-filter>
