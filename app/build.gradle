@@ -28,7 +28,7 @@ android {
     signingConfigs {
         release {
             Properties properties = new Properties()
-            properties.load(project.rootProject.file("appkey.properties").newDataInputStream())
+            properties.load(project.rootProject.file("keystorage.properties").newDataInputStream())
             def appKey = properties.getProperty("appkey")
 
             storeFile file("keystore.jks")
