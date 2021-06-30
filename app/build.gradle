@@ -25,18 +25,53 @@ android {
         viewBinding true
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file("appkey.properties").newDataInputStream())
+            def appKey = properties.getProperty("appkey")
+
+            storeFile file("keystore.jks")
+            storePassword = appKey
+            keyAlias 'testKey'
+            keyPassword = appKey
         }
     }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TYPE", '"RELEASE"'
+        }
+
+        free {
+            initWith debug
+            versionNameSuffix "-free"
+            buildConfigField "String", "TYPE", '"FREE VERSION"'
+        }
+
+        debug {
+            versionNameSuffix "-debug"
+            buildConfigField "String", "TYPE", '"DEBUG VERSION"'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    flavorDimensions 'versions'
+    productFlavors {
+        freeConfig {
+            dimension 'versions'
+            versionName '.free'
+        }
     }
 }
 

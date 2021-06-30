@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (item.itemId == R.id.about_button) {
-            Toast.makeText(this, "About app", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.aboutApp, Toast.LENGTH_LONG).show()
         }
 
         if (item.itemId == R.id.settings) {
